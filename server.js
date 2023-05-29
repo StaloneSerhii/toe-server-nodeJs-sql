@@ -1,15 +1,17 @@
 const app = require("./app");
-const mongoose = require("mongoose");
-const { DB_HOST, PORT } = process.env;
-mongoose.set("strictQuery", true);
+const mysql = require("mysql2");
+const { DB_HOST } = process.env;
 
-mongoose
-  .connect(DB_HOST)
-  .then(() => {
-    app.listen(3001);
-    console.log("Database connection successful");
-  })
-  .catch((error) => {
-    console.log(error.message);
+const connection = mysql.createConnection(DB_HOST);
+
+connection.connect((error) => {
+  if (error) {
+    console.error("Database connection error:", error.message);
     process.exit(1);
-  });
+  }
+  app.set("connection", connection);
+  app.listen(3000);
+  console.log("Database connection successful");
+});
+
+module.exports = connection.promise();
