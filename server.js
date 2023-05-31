@@ -10,7 +10,7 @@ connection.connect((error) => {
     process.exit(1);
   }
   app.set("connection", connection);
-  app.listen(4000);
+  app.listen(3000);
   console.log("Database connection successful");
 });
 
